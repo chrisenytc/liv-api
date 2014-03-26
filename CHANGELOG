@@ -1,3 +1,7 @@
+v0.2.0:
+  date: 2014-3-26
+  changes:
+    - Feature: JSON responses.
 v0.1.0:
   date: 2014-3-26
   changes:

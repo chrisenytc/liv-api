@@ -27,10 +27,11 @@ from cors import cors
 @cors(origin='*', methods=['POST'])
 def users_signup():
     # Create new user
+    data = request.get_json()
     new_user = User()
-    new_user.name = request.form['name']
-    new_user.email = request.form['email']
-    new_user.password = sha1(request.form['password']).hexdigest()
+    new_user.name = data['name']
+    new_user.email = data['email']
+    new_user.password = sha1(data['password']).hexdigest()
     new_user.token = str(uuid.uuid4())
     new_user.save()
     create_activate_token = Activate(
@@ -66,8 +67,9 @@ def users_signup():
 @cors(origin='*', methods=['POST'])
 def users_signin():
     # Retorn a user data
-    user_info = User.objects(email=request.form['email'], password=sha1(
-        request.form['password']).hexdigest())
+    data = request.get_json()
+    user_info = User.objects(email=data['email'], password=sha1(
+        data['password']).hexdigest())
     if user_info.count():
         return JSON(token=user_info.get().token, roles=user_info.get().roles)
     else:
@@ -114,7 +116,8 @@ def users_activate_user():
 @app.route('/forgot', methods=['POST'])
 @cors(origin='*', methods=['POST'])
 def users_forgot():
-    user_info = User.objects(email=request.form['email'])
+    data = request.get_json()
+    user_info = User.objects(email=data['email'])
     if user_info.count():
         create_forgot_token = Forgot(
             email=user_info.get().email, token=str(uuid.uuid4()))

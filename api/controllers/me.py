@@ -30,13 +30,14 @@ def me_index():
 @cors(origin='*', methods=['PUT'])
 @require_auth(roles='*')
 def me_update():
+    data = request.get_json()
     user = User.objects(email=request.user['email'])
-    if request.form['name'] is not '':
-        user.update(set__name=request.form['name'])
-    if request.form['email'] is not '':
-        user.update(set__email=request.form['email'])
-    if request.form['password'] is not '':
-        user.update(set__password=sha1(request.form['password']).hexdigest())
+    if data['name'] != '':
+        user.update(set__name=data['name'])
+    if data['email'] != '':
+        user.update(set__email=data['email'])
+    if data['password'] != '':
+        user.update(set__password=sha1(data['password']).hexdigest())
     return JSON(message='Account updated successfully!')
 
 

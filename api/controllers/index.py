@@ -17,3 +17,9 @@ from cors import cors
 @cors(origin='*')
 def index():
     return JSON(welcome='Welcome to Liv API')
+
+
+@app.route('/status')
+@cors(origin='*')
+def status():
+    return JSON(apiStatus=True, storageStatus=True)

@@ -28,6 +28,7 @@ def modules_index():
 @cors(origin='*', methods=['PUT'])
 @require_auth(roles='*')
 def modules_update():
+    data = request.get_json()
     modules = User.objects(email=request.user['email'])
-    modules.update(set__modules=request.get_json()['modules'])
+    modules.update(set__modules=data['modules'])
     return JSON(message='Modules updated successfully!')
